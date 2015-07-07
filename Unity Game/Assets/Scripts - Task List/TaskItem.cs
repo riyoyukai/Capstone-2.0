@@ -5,6 +5,7 @@ using UnityEngine.UI;
 // this gets connected to the Panel that holds the task item and options panel
 public class TaskItem : MonoBehaviour {
 
+	public GameObject taskItemPanelPrefab;
 	public Button actionButton;
 	public Text actionButtonText;
 	public InputField inputField;
@@ -37,6 +38,8 @@ public class TaskItem : MonoBehaviour {
 			plus = false;
 			check = false;
 			delete = true;
+
+			// add new 'new task' task item panel
 		}
 		else if (delete) {
 			plus = false;

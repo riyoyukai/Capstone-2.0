@@ -46,7 +46,12 @@
 	</Reference>
   </ItemGroup>
   <ItemGroup>
-     <Compile Include="Assets\Scripts\TaskItem.cs" />
+     <Compile Include="Assets\Scripts - Monster\Wander.cs" />
+     <Compile Include="Assets\Scripts - Monster\Wander2.cs" />
+     <Compile Include="Assets\Scripts - Task List\TaskItem.cs" />
+     <Compile Include="Assets\Scripts - Task List\TaskList.cs" />
+     <None Include="Assets\TSF\Shaders\TSFOutline.shader" />
+     <None Include="Assets\TSF\Shaders\TSF.shader" />
  <Reference Include="UnityEngine.UI">
  <HintPath>C:/Program Files/Unity/Editor/Data/UnityExtensions/Unity/GUISystem/UnityEngine.UI.dll</HintPath>
  </Reference>
