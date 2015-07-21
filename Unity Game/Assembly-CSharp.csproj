@@ -46,6 +46,10 @@
 	</Reference>
   </ItemGroup>
   <ItemGroup>
+     <Compile Include="Assets\Scripts - Monster\Monster.cs" />
+     <Compile Include="Assets\Scripts - Monster\MonsterBehavior.cs" />
+     <Compile Include="Assets\Scripts - Monster\NewWander.cs" />
+     <Compile Include="Assets\Scripts - Monster\UIController.cs" />
      <Compile Include="Assets\Scripts - Monster\Wander.cs" />
      <Compile Include="Assets\Scripts - Monster\Wander2.cs" />
      <Compile Include="Assets\Scripts - Task List\TaskItem.cs" />

@@ -10,7 +10,9 @@ public class Wander : MonoBehaviour
 {
 	private float speed = 2;
 	private float directionChangeInterval = 1;
-	private float maxHeadingChange = 50;
+	private float directionChangeIntervalMin = 1;
+	private float directionChangeIntervalMax = 5;
+	private float maxHeadingChange = 360;
 	
 	CharacterController controller;
 	float heading;
@@ -39,6 +41,7 @@ public class Wander : MonoBehaviour
 	IEnumerator NewHeading (){
 		while (true){
 			NewHeadingRoutine();
+			directionChangeInterval = Random.Range(-directionChangeIntervalMin, directionChangeIntervalMax);
 			yield return new WaitForSeconds(directionChangeInterval);
 		}
 	}
