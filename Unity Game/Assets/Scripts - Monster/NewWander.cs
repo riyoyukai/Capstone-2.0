@@ -2,70 +2,87 @@
 using System.Collections;
 
 /// <summary>
-/// from http://forum.unity3d.com/threads/animal-ai-random-movements.304868/
-/// by http://forum.unity3d.com/members/lineupthesky.762934/
+/// Creates wandering behaviour for a CharacterController.
+/// from http://wiki.unity3d.com/index.php/Wander
 /// </summary>
-public class NewWander : MonoBehaviour {
-
-	private float directionChangeInterval = 1;
-	private float maxHeadingChange = 50;
+[RequireComponent(typeof(CharacterController))]
+public class NewWander : MonoBehaviour
+{
+	private float speed = 1.5f;
+	private float directionChangeInterval = 1.5f;
+	private float directionChangeIntervalMin = 1;
+	private float directionChangeIntervalMax = 5;
+	private float maxHeadingChange = 360;
 	
 	CharacterController controller;
 	float heading;
 	Vector3 targetRotation;
-	
-	private float speed = 3;
-	private float randomX = 10;
-	private float randomZ = 10;
-	private float minWaitTime = 1;
-	private float maxWaitTime = 5;
-	private Vector3 currentRandomPos;
+	Vector3 faceRight = new Vector3(0, 90, 0);
+	Vector3 faceLeft = new Vector3(0, -90, 0);
 
+	float edge = 3.21f;
+	bool turning = true;
+
+//	bool clockwise = true;
+	
 	void Awake (){
 		controller = GetComponent<CharacterController>();
 		
 		// Set random initial rotation
-		heading = Random.Range(0, 360);
+		heading = 0;
+		targetRotation = faceRight;
 		transform.eulerAngles = new Vector3(0, heading, 0);
+		
+		//StartCoroutine(NewHeading());
 	}
 
-	void Start(){
-		PickPosition();
-	}
-	
-	void PickPosition(){
-		currentRandomPos = new Vector3(Random.Range(-randomX, randomX), 0, Random.Range(-randomZ, randomZ));
-		StartCoroutine ( MoveToRandomPos());
-		print ("Picking new position: " + currentRandomPos.x + ", " + currentRandomPos.z);
+	private bool IsWithin(float headY, float degrees, float tarY){
+		headY = Mathf.Abs (headY);
+		tarY = Mathf.Abs (tarY);
+		if (headY - tarY > -degrees && headY - tarY < degrees)
+			return true;
+		return false;
 	}
 	
 	void Update (){
+
+		// turning
+		if (turning) {
+			speed = 0;
+			if(IsWithin(transform.eulerAngles.y, 5, targetRotation.y)){
+				transform.eulerAngles = targetRotation;
+				turning = false;
+				speed = 1.5f;
+			}
+		} else {
+			if(transform.position.x > edge){
+				turning = true;
+				targetRotation = faceLeft;
+			}else if(transform.position.x < -edge){
+				turning = true;
+				targetRotation = faceRight;
+			}
+		}
+
 		transform.eulerAngles = Vector3.Slerp(transform.eulerAngles, targetRotation, Time.deltaTime * directionChangeInterval);
 		var forward = transform.TransformDirection(Vector3.forward);
 		controller.SimpleMove(forward * speed);
+
+		// walking
+			// meet edge
+				// turn
 	}
 	
-	IEnumerator MoveToRandomPos(){
-		float i = 0.0f;
-		float rate = 1.0f / speed;
-		Vector3 currentPos = transform.position;
-		
-		while (i < 1.0f) {
+	/// <summary>
+	/// Repeatedly calculates a new direction to move towards.
+	/// Use this instead of MonoBehaviour.InvokeRepeating so that the interval can be changed at runtime.
+	/// </summary>
+	IEnumerator NewHeading (){
+		while (true){
 			NewHeadingRoutine();
+			directionChangeInterval = Random.Range(-directionChangeIntervalMin, directionChangeIntervalMax);
 			yield return new WaitForSeconds(directionChangeInterval);
 		}
-		
-		float randomFloat = Random.Range(0.0f,1.0f); // Create %50 chance to wait
-		if(randomFloat < 0.5f)
-			StartCoroutine ( WaitForSomeTime());
-		else
-			PickPosition();
-	}
-	
-	IEnumerator WaitForSomeTime(){
-		print ("Waiting...");
-		yield return new WaitForSeconds(Random.Range(minWaitTime, maxWaitTime));
-		PickPosition();
 	}
 	
 	/// <summary>
