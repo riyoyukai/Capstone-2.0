@@ -53,7 +53,6 @@
      <Compile Include="Assets\Scripts - Monster\Wander.cs" />
      <Compile Include="Assets\Scripts - Monster\Wander2.cs" />
      <Compile Include="Assets\Scripts - Task List\DeadlineController.cs" />
-     <Compile Include="Assets\Scripts - Task List\ReminderController.cs" />
      <Compile Include="Assets\Scripts - Task List\TaskItem.cs" />
      <Compile Include="Assets\Scripts - Task List\TaskList.cs" />
      <Compile Include="Assets\Scripts - Task List\ToggleChild.cs" />

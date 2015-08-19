@@ -16,35 +16,52 @@ public class DeadlineController : MonoBehaviour {
 
 	public InputField hourField;
 	public InputField minuteField;
+	public InputField dayField;
 	public InputField yearField;
 	public Text ampmField;
-	public Text monthText; // used for styling
+	public Text monthText;
 	public GameObject monthOptions;
-	public Text dayText; // used for styling
-	public GameObject dayOptions;
 	public GameObject ampmOptions;
-
-	private static float fcn = 50.0f / 255.0f;
+	
+	private int remindMinutes;
+	private int remindHours;
+	private int remindDays;
+	private int remindWeeks;
+	private int remindYears;
 
 	void Start(){
-		E_EnterDay(System.DateTime.Today.Day);
+		day = (System.DateTime.Today.Day);
 		E_EnterMonth(System.DateTime.Today.Month);
 		year = System.DateTime.Today.Year;
 		hour = System.DateTime.Now.Hour;
 		minute = System.DateTime.Now.Minute;
-		ampm = "AM";
+
+		hour++;
+		if (hour == 24) {
+			hour = 0;
+			day++;
+			if(day > System.DateTime.DaysInMonth(year, month)){
+				day = 1;
+				month++;
+				if(month == 13){
+					month = 1;
+					year++;
+				}
+			}
+		}
+		
 		hourField.text = "" + hour;
 		if(hour == 0) hourField.text = "" + 12;
 		if(hour > 12) hourField.text = "" + (hour-12);
 		minuteField.text = "" + minute;
 		yearField.text = "" + year;
-
+		dayField.text = "" + day;
+		
+		ampm = "AM";
 		if(hour > 12) ampm = "PM";
 		ampmField.text = ampm;
 
 		BuildDeadlineText ();
-
-		print (hour);
 	}
 
 	private void BuildDeadlineText(){
@@ -58,6 +75,7 @@ public class DeadlineController : MonoBehaviour {
 	}
 	
 	public void E_EnterMonth(int monthInt){
+		month = monthInt;
 		monthString = "ERROR";
 		switch (monthInt) {
 			case 1: monthString = "January"; break;
@@ -78,10 +96,16 @@ public class DeadlineController : MonoBehaviour {
 		BuildDeadlineText ();
 	}
 	
-	public void E_EnterDay(int dayInt){
-		dayText.text = "" + dayInt;
-		dayOptions.SetActive (false);
-		day = dayInt;
+	public void E_EnterDay(){
+		day = int.Parse(dayField.text);
+		int daysInMo = System.DateTime.DaysInMonth (year, month);
+		if (day > daysInMo) {
+			day = daysInMo;
+		}
+		//TODO: Test to see if days are properly limited
+
+		dayField.text = "" + day;
+
 		BuildDeadlineText ();
 	}
 	
@@ -109,7 +133,6 @@ public class DeadlineController : MonoBehaviour {
 	}
 	
 	public void E_EnterMinute(){
-		print ("Enter minute done");
 		int.TryParse (minuteField.text, out minute);
 		if(minute > 59){
 			minute = 59;
@@ -134,8 +157,32 @@ public class DeadlineController : MonoBehaviour {
 			inpField.text = inpField.text.Replace("-", "");
 		}
 	}
+	
+	public void E_RemindMinutes(){
+		
+	}
+	
+	public void E_RemindHours(){
+		
+	}
+	
+	public void E_RemindDays(){
+		
+	}
+	
+	public void E_RemindWeeks(){
+		
+	}
+	
+	public void E_RemindMonths(){
+		
+	}
 
 	public void E_Confirm(){
+		System.DateTime deadlineDate = new System.DateTime (year, month, day, hour, minute, 0);
+		print ("DEADLINE: " + deadlineDate);
 		//TODO: build date and compare to today. if in the past, give error.
+		print ("Comparing: " + System.DateTime.Compare (deadlineDate, System.DateTime.Now));
+		// if -1, invalid
 	}
 }
