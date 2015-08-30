@@ -3,13 +3,22 @@ using System.Collections;
 
 public class UIItemDraggable : MonoBehaviour {
 
-	public void E_Drag(){
-		
-		Vector3 pos = this.transform.position;
+	private Vector3 anchor;
+	public UIItemDock currentDock;
 
-		pos.x = Input.mousePosition.x;
-		pos.y = Input.mousePosition.y;
+	/// <summary>
+	/// Sets the anchor position.
+	/// </summary>
+	/// <param name="newPos">New position.</param>
+	public void SetAnchor (Vector2 newPos){
+		anchor = newPos;
+		this.transform.position = newPos;
+	}
 
-		this.transform.position = pos;
+	/// <summary>
+	/// Returns card position to anchor.
+	/// </summary>
+	public void SnapToAnchor(){
+		this.transform.position = anchor;
 	}
 }

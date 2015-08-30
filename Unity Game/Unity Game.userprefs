@@ -2,12 +2,9 @@
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
   <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Scripts - UI\InventoryController.cs">
     <Files>
-      <File FileName="Assets\Scripts - UI\UIItemDraggable.cs" Line="13" Column="24" />
-      <File FileName="Assets\Scripts - UI\GameStateManager.cs" Line="1" Column="1" />
-      <File FileName="Assets\Scripts - Task List\DeadlineController.cs" Line="1" Column="1" />
-      <File FileName="Assets\Scripts - Task List\ToggleChild.cs" Line="1" Column="1" />
-      <File FileName="Assets\Scripts - Monster\Monster.cs" Line="1" Column="1" />
-      <File FileName="Assets\Scripts - UI\InventoryController.cs" Line="19" Column="1" />
+      <File FileName="Assets\Scripts - UI\InventoryController.cs" Line="106" Column="49" />
+      <File FileName="Assets\Scripts - UI\UIItemDraggable.cs" Line="13" Column="41" />
+      <File FileName="Assets\Scripts - UI\UIItemDock.cs" Line="8" Column="9" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>

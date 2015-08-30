@@ -59,6 +59,7 @@
      <Compile Include="Assets\Scripts - UI\InventoryController.cs" />
      <Compile Include="Assets\Scripts - UI\Popup.cs" />
      <Compile Include="Assets\Scripts - UI\UIController.cs" />
+     <Compile Include="Assets\Scripts - UI\UIItemDock.cs" />
      <Compile Include="Assets\Scripts - UI\UIItemDraggable.cs" />
      <None Include="Assets\TSF\Shaders\TSFOutline.shader" />
      <None Include="Assets\TSF\Shaders\TSF.shader" />
