@@ -19,8 +19,10 @@ public class InventoryController : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
+		this.gameObject.SetActive(true);
 		rt = GetComponent<RectTransform>();
 		cg = GetComponent<CanvasGroup>();
+		CloseInventory();
 	}
 	
 	public void OpenInventory(){
@@ -42,30 +44,11 @@ public class InventoryController : MonoBehaviour {
 		// else, swap items
 	}
 
-	public bool IsObjWithinBounds(GameObject obj, GameObject bounds){
-		RectTransform brt = bounds.GetComponent<RectTransform>();
-		float halfW = brt.rect.width/2;
-		float halfH = brt.rect.height/2;
-		Vector3 p = obj.transform.position;
-//		print ("is " + p + " within " +
-//		       (bounds.transform.position.x - halfW) + ", " +
-//		       (bounds.transform.position.x + halfW) + ", " + 
-//		       (bounds.transform.position.y - halfH) + ", " + 
-//		       (bounds.transform.position.y + halfH));
-		if (p.x > bounds.transform.position.x - halfW &&
-		    p.x < bounds.transform.position.x + halfW &&
-		    p.y > bounds.transform.position.y - halfH &&
-		    p.y < bounds.transform.position.y + halfH) {
-			return true;
-		}
-		return false;
-	}
-
-	public void E_DownOnItem(UIItemDraggable item){
+	public void E_DownOnUIItem(UIItemDraggable item){
 		item.transform.SetParent(heldItemPanel.transform);
 	}
 	
-	public void E_DragItem(GameObject pItem){		
+	public void E_DragUIItem(GameObject pItem){		
 		pItem.transform.position = Input.mousePosition;
 
 		// if inventory is open
@@ -79,16 +62,16 @@ public class InventoryController : MonoBehaviour {
 		// if inventory is closed
 		}else{
 			// if mouse over the inventory button, open inventory
-			if(IsObjWithinBounds(pItem, inventoryButton.gameObject)) OpenInventory();
+			if(Ease.IsPointWithinBounds(pItem.transform.position, inventoryButton.gameObject)) OpenInventory();
 		}
 	}
 
-	public void E_UpOnItem(UIItemDraggable item){
+	public void E_UpOnUIItem(UIItemDraggable item){
 		// if inventory is still open
 		if(cg.alpha == 1){
 			bool upOnDock = false;
 			for (int i = 0; i < itemDocks.Length; i++) {
-				if(IsObjWithinBounds(item.gameObject, itemDocks[i].gameObject)){
+				if(Ease.IsPointWithinBounds(item.transform.position, itemDocks[i].gameObject)){
 					print ("iteration: " + i);	
 					if(item.currentDock == itemDocks[i]) break;
 					upOnDock = true;
