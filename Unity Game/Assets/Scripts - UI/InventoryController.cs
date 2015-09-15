@@ -12,16 +12,18 @@ public class InventoryController : MonoBehaviour {
 	public UIItemDock[] itemDocks;
 	public Image dockedItemsPanel;
 	public Image heldItemPanel;
-	private UIItemDraggable heldItem;
 	private RectTransform rt;
 	private CanvasGroup cg;
-	public Transform TestItem;
+	public Transform newItemBehavior;
+	public Transform newUIItemDraggable;
 
 	// Use this for initialization
 	void Start () {
 		this.gameObject.SetActive(true);
 		rt = GetComponent<RectTransform>();
 		cg = GetComponent<CanvasGroup>();
+		GameData.TestInventory();
+		PopulateInventory();
 		CloseInventory();
 	}
 	
@@ -35,13 +37,52 @@ public class InventoryController : MonoBehaviour {
 		cg.blocksRaycasts = false;
 	}
 
-	private void PutItemInDock(UIItemDraggable item, UIItemDock dock){
-		// if dock is not holding item
-		dock.heldItem = item;
-		item.currentDock = dock;
-		dock.AnchorItem();
+	/// <summary>
+	/// Iterates through item docks as long as index i exists in GameData.inventory
+	/// </summary>
+	public void PopulateInventory(){
+		for(int i = 0; i < itemDocks.Length && GameData.inventory.Count > i; i++){
+			if(GameData.inventory[i] != null){
+				Vector3 newPos = itemDocks[i].transform.position;
+				GameObject newItem = Instantiate(newUIItemDraggable, newPos, newUIItemDraggable.rotation) as GameObject;
+//				print ("Blarg. null? " + (newItem == null));
+				// TODO: 
+//				UIItemDraggable newItemDraggable = newItem.GetComponent<UIItemDraggable>();
+//				newItemDraggable.SetUp(GameData.inventory[i]);
+//				PutItemInDock(newItemDraggable, itemDocks[i]);
+			}
+		}
+	}
 
-		// else, swap items
+	/// <summary>
+	/// Returns an ItemBehavior's item to the inventory
+	/// </summary>
+	/// <param name="pItem">P item.</param>
+	public void TakeItem(Item pItem){
+		//TODO: GameData.inventory
+	}
+
+	private void PutItemInDock(UIItemDraggable item1, UIItemDock dock2){
+		// if dock is not holding item
+		if(dock2.heldItem == null){
+			if(item1.currentDock) item1.currentDock.heldItem = null;
+			dock2.heldItem = item1;
+			item1.currentDock = dock2;
+			dock2.AnchorItem();
+			print ("Dock 2 was not holding an item");
+		}else{ // else, swap items
+			UIItemDock dock1 = item1.currentDock;
+			UIItemDraggable item2 = dock2.heldItem;
+
+			dock2.heldItem = item1;
+			item1.currentDock = dock2;
+			dock2.AnchorItem();
+
+			dock1.heldItem = item2;
+			item2.currentDock = dock1;
+			dock1.AnchorItem();
+			print ("Swapped items");
+		}
 	}
 
 	public void E_DownOnUIItem(UIItemDraggable item){
@@ -62,7 +103,7 @@ public class InventoryController : MonoBehaviour {
 		// if inventory is closed
 		}else{
 			// if mouse over the inventory button, open inventory
-			if(Ease.IsPointWithinBounds(pItem.transform.position, inventoryButton.gameObject)) OpenInventory();
+			if(Ease.IsPointWithinRect(pItem.transform.position, inventoryButton.gameObject)) OpenInventory();
 		}
 	}
 
@@ -71,7 +112,7 @@ public class InventoryController : MonoBehaviour {
 		if(cg.alpha == 1){
 			bool upOnDock = false;
 			for (int i = 0; i < itemDocks.Length; i++) {
-				if(Ease.IsPointWithinBounds(item.transform.position, itemDocks[i].gameObject)){
+				if(Ease.IsPointWithinRect(item.transform.position, itemDocks[i].gameObject)){
 					print ("iteration: " + i);	
 					if(item.currentDock == itemDocks[i]) break;
 					upOnDock = true;
@@ -86,13 +127,14 @@ public class InventoryController : MonoBehaviour {
 			Vector3 newZ = item.transform.position;
 			newZ.z = 24;
 			Vector3 itemWS = Camera.main.ScreenToWorldPoint(newZ);
-			Vector3 newPos = new Vector3(itemWS.x, itemWS.y, TestItem.position.z);
-			Instantiate(TestItem, newPos, TestItem.rotation);
+			Vector3 newPos = new Vector3(itemWS.x, itemWS.y, newItemBehavior.position.z);
+			Instantiate(newItemBehavior, newPos, newItemBehavior.rotation);
 
 			print ("CREATE ITEM");
 			print ("Mouse y: " + Input.mousePosition.y);
 			print ("newPos y: " + newPos.y);
 
+			item.currentDock.heldItem = null;
 			Destroy (item.gameObject);
 		}
 	}

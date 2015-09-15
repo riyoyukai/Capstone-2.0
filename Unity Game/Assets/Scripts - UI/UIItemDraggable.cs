@@ -1,10 +1,22 @@
 ﻿using UnityEngine;
+using UnityEngine.UI;
 using System.Collections;
 
 public class UIItemDraggable : MonoBehaviour {
 
+	private Item item;
 	private Vector3 anchor;
 	public UIItemDock currentDock;
+	
+	/// <summary>
+	/// This should be called every time a new ItemBehavior is instantiated so
+	/// that it is linked to an Item object and associated with GameData.inventory
+	/// </summary>
+	/// <param name="pItem">pItem.</param>
+	public void SetUp(Item pItem){
+		item = pItem;
+		GetComponent<Image>().sprite = Resources.Load<Sprite>(item.textureName);
+	}
 
 	/// <summary>
 	/// Sets the anchor position.
@@ -16,7 +28,7 @@ public class UIItemDraggable : MonoBehaviour {
 	}
 
 	/// <summary>
-	/// Returns card position to anchor.
+	/// Returns position to anchor.
 	/// </summary>
 	public void SnapToAnchor(){
 		this.transform.position = anchor;
