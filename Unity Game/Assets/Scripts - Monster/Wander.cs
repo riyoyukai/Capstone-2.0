@@ -8,11 +8,18 @@ using System.Collections;
 [RequireComponent(typeof(CharacterController))]
 public class Wander : MonoBehaviour
 {
+
+	enum FacingDirection {
+		Left,
+		Right
+	}
+
+	private FacingDirection dir = FacingDirection.Left;
 	private float speed = 2;
 	private float directionChangeInterval = 1;
 	private float directionChangeIntervalMin = 1;
 	private float directionChangeIntervalMax = 5;
-	private float maxHeadingChange = 360;
+	private float maxHeadingChange = 60;
 	
 	CharacterController controller;
 	float heading;
@@ -22,16 +29,45 @@ public class Wander : MonoBehaviour
 		controller = GetComponent<CharacterController>();
 		
 		// Set random initial rotation
-		heading = Random.Range(0, 360);
-		transform.eulerAngles = new Vector3(0, heading, 0);
+		heading = 90;
+		//transform.eulerAngles = new Vector3(0, heading, 0);
 		
 		StartCoroutine(NewHeading());
 	}
 	
 	void Update (){
-		transform.eulerAngles = Vector3.Slerp(transform.eulerAngles, targetRotation, Time.deltaTime * directionChangeInterval);
+		//transform.eulerAngles = Vector3.Slerp(transform.eulerAngles, targetRotation, Time.deltaTime * directionChangeInterval);
 		var forward = transform.TransformDirection(Vector3.forward);
-		controller.SimpleMove(forward * speed);
+		//controller.SimpleMove(forward * speed);
+
+		if (dir == FacingDirection.Left) {
+
+			print (heading);
+
+			if(heading != 270){
+				heading = Mathf.Lerp(heading, 270, Time.deltaTime * directionChangeInterval);
+				if(Mathf.Abs(heading - 270) < 1) {
+					heading = 270;
+					transform.rotation = Quaternion.LookRotation(Vector3.left);
+				}
+
+			} else {
+				controller.SimpleMove(forward * speed);
+			}
+
+		} else {
+			if(heading != 90){
+				heading = Mathf.Lerp(heading, 90, Time.deltaTime * directionChangeInterval);
+				if(Mathf.Abs(heading - 90) < 1) {
+					heading = 90;
+					transform.rotation = Quaternion.LookRotation(Vector3.right);
+				}
+			} else {
+				controller.SimpleMove(forward * speed);
+			}
+
+		}
+
 	}
 	
 	/// <summary>
@@ -41,7 +77,7 @@ public class Wander : MonoBehaviour
 	IEnumerator NewHeading (){
 		while (true){
 			NewHeadingRoutine();
-			directionChangeInterval = Random.Range(-directionChangeIntervalMin, directionChangeIntervalMax);
+			directionChangeInterval = Random.Range(directionChangeIntervalMin, directionChangeIntervalMax);
 			yield return new WaitForSeconds(directionChangeInterval);
 		}
 	}
@@ -50,9 +86,11 @@ public class Wander : MonoBehaviour
 	/// Calculates a new direction to move towards.
 	/// </summary>
 	void NewHeadingRoutine (){
-		var floor = Mathf.Clamp(heading - maxHeadingChange, 0, 360);
-		var ceil  = Mathf.Clamp(heading + maxHeadingChange, 0, 360);
-		heading = Random.Range(floor, ceil);
-		targetRotation = new Vector3(0, heading, 0);
+
+		if (Random.Range (0, 100) > 50) {
+			dir = FacingDirection.Left;
+		} else {
+			dir = FacingDirection.Right;
+		}
 	}
 }
