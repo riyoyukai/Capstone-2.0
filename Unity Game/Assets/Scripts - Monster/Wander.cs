@@ -30,7 +30,6 @@ public class Wander : MonoBehaviour
 		
 		// Set random initial rotation
 		heading = 90;
-		//transform.eulerAngles = new Vector3(0, heading, 0);
 		
 		StartCoroutine(NewHeading());
 	}

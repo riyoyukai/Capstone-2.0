@@ -2,7 +2,16 @@
 using System.Collections;
 
 public static class Ease {
-	
+	public static int RandomInt(int min, int max){ // max is inclusive
+		int num = Mathf.Floor(Random.Range() * (max - min + 1)) + min;
+		return num;
+	}
+
+	public static float RandomFloat(float min, float max){ // max is exclusive
+		var num = (Random.Range() * (max - min)) + min;
+		return num;
+	}
+
 	public static bool IsPointWithinRect(Vector3 p, GameObject rect){
 		RectTransform brt = rect.GetComponent<RectTransform>();
 		float halfW = brt.rect.width/2;

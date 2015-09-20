@@ -1,9 +1,12 @@
 ﻿<Properties>
-  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" PreferredExecutionTarget="MonoDevelop.Default" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Scripts - Monster\Wander.cs">
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Scripts - Monster\WanderNoCC.cs">
     <Files>
-      <File FileName="Assets\Scripts - UI\InventoryController.cs" Line="1" Column="1" />
-      <File FileName="Assets\Scripts - Monster\Wander.cs" Line="33" Column="5" />
+      <File FileName="Assets\Scripts - Monster\Wander.cs" Line="17" Column="53" />
+      <File FileName="Assets\Scripts - Monster\NewWander.cs" Line="97" Column="2" />
+      <File FileName="Assets\Scripts - Monster\Wander2.cs" Line="55" Column="1" />
+      <File FileName="Assets\Scripts - Monster\WanderNoCC.cs" Line="32" Column="3" />
+      <File FileName="Assets\Scripts - Static\Ease.cs" Line="10" Column="33" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
